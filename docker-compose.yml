@@ -1,0 +1,36 @@
+version: '3'
+services:
+  php:
+    build: .
+    volumes:
+      - ./app:/var/www/html
+    networks:
+      - mynetwork
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - mynetwork
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: lomtjjzictcttsdkcs
+      MYSQL_DATABASE: shop
+      MYSQL_USER: kamil
+      MYSQL_PASSWORD: lomtjjzictcttsdkcs
+    networks:
+      - mynetwork
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - mynetwork
+networks:
+  mynetwork:
